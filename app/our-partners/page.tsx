@@ -1,5 +1,9 @@
+import ExhibitorsPage from "../components/Exhibitors/ExhibitorsPage";
+
 const Exhibitors = () => {
-    return <h1>Exhibitors</h1>;
+    return (
+        <ExhibitorsPage />
+    )
 };
 
 export default Exhibitors;
