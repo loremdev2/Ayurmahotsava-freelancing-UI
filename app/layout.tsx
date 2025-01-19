@@ -20,6 +20,7 @@ export default function RootLayout({
         {/* Thin orange line below Navbar */}
         <div className="h-[0.5px] bg-orange-300 mb-4"></div>
         <main className="flex-grow">{children}</main>
+        <div className="h-[0.5px] bg-orange-100"></div>
         <Footer />
       </body>
     </html>
