@@ -1,5 +1,9 @@
+import Contact_Us from "../components/ContactUsPage/Contact_Us";
+
 const ContactUs = () => {
-    return <h1>ContactUs</h1>;
+    return (
+        <Contact_Us />
+    )
 };
 
 export default ContactUs;
