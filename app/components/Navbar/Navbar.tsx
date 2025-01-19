@@ -41,23 +41,27 @@ const Navbar = () => {
                         <div className="flex flex-1 items-center sm:items-stretch sm:justify-start">
                             <div className="flex flex-shrink-0 items-center">
                                 {/* Mobile view */}
-                                <div className="block h-12 w-40 lg:hidden relative">
-                                    <Image
-                                        src="/assets/logo/logo.png"
-                                        alt="dsign-logo"
-                                        fill
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
+                                <Link href="/" passHref>
+                                    <div className="block h-12 w-40 lg:hidden relative cursor-pointer">
+                                        <Image
+                                            src="/assets/logo/logo.png"
+                                            alt="dsign-logo"
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    </div>
+                                </Link>
                                 {/* Desktop view */}
-                                <div className="hidden lg:block relative h-12 w-40">
-                                    <Image
-                                        src="/assets/logo/logo.png"
-                                        alt="dsign-logo"
-                                        fill
-                                        style={{ objectFit: 'contain' }}
-                                    />
-                                </div>
+                                <Link href="/" passHref>
+                                    <div className="hidden lg:block relative h-12 w-40 cursor-pointer">
+                                        <Image
+                                            src="/assets/logo/logo.png"
+                                            alt="dsign-logo"
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                        />
+                                    </div>
+                                </Link>
                             </div>
 
                             {/* LINKS */}
