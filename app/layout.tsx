@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="flex flex-col min-h-screen">
         <Navbar />
         {/* Thin orange line below Navbar */}
-        <div className="h-[0.5px] bg-orange-300 mb-4"></div>
+        <div className="h-[0.5px] bg-orange-300"></div>
         <main className="flex-grow">{children}</main>
         <div className="h-[0.5px] bg-orange-100"></div>
         <Footer />

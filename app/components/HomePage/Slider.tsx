@@ -1,8 +1,12 @@
+import Head from "next/head";
+import ImageSlider from "../ImageSlider/ImageSlider";
+
 const Slider = () => {
     return (
-        <div>
-            <h2>Slider</h2>
-        </div>
+
+
+        <ImageSlider />
+
     );
 }
 
