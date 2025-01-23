@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import BookStall from '../Icons/BookStallIcon';
 import RegisterStallIcon from '../Icons/RegisterStallIcon';
@@ -14,7 +15,7 @@ const Section_2: React.FC = () => {
                 <p className="text-gray-500">
                     <strong>Promote your brand in the largest expo in AYUSH sector, Dehradun, Uttarakhand</strong>
                 </p>
-                <button className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">
+                <button onClick={() => window.open('https://nextjs.org/docs/', '_blank')} className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">
                     Register Now
                 </button>
             </div>
