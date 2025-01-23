@@ -10,18 +10,22 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 // Interface for image data
 interface ImageData {
     src: StaticImageData;
+    text: string;  // Added text for each image
 }
 
 // Image data array
 const images: ImageData[] = [
     {
         src: image1,
+        text: "Mega Festival of Ayurveda",
     },
     {
         src: image2,
+        text: "Mega Festival of Ayurveda",
     },
     {
         src: image3,
+        text: "Mega Festival of Ayurveda",
     },
 ];
 
@@ -73,6 +77,25 @@ export default function ImageSlider(): any {
                     objectFit="cover"
                     className="transition-all duration-500 ease-in-out cursor-pointer"
                 />
+                {/* Centered Text */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-3xl font-bold z-10 text-heading">
+                    {images[currentIndex].text}
+                </div>
+                {/* Heading with custom styles */}
+                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 custom-heading">
+                    Heading
+                </div>
+
+                {/* Conditional "Read More" button on 2nd and 3rd images */}
+                {(currentIndex === 1 || currentIndex === 2) && (
+                    <button
+                        className="absolute top-[calc(50%+20px)] left-1/2 transform -translate-x-1/2 px-4 py-1 border-2 border-white text-white text-lg rounded-full bg-transparent hover:bg-white hover:text-black transition-all duration-300 ease-in-out z-10"
+                    >
+                        Read More
+                    </button>
+
+                )}
+
                 <button
                     className="absolute left-0 top-1/2 transform -translate-y-1/2 h-full w-10 flex items-center justify-center bg-transparent text-white rounded-l-md transition-all duration-300 ease-in-out"
                     onClick={prevSlide}
@@ -98,7 +121,6 @@ export default function ImageSlider(): any {
                     ></button>
                 ))}
             </div>
-
         </div>
     );
 }
