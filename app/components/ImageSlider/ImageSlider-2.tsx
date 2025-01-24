@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect} from "react";
 import Image from "next/image";
 import { StaticImageData } from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -68,82 +68,146 @@ const images: ImageData[] = [
     { src: image26 },
     { src: image27 },
 ];
-export default function ImageSlider(): any {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const sliderRef = useRef<HTMLDivElement>(null);
+export default function ImageSlider2(): React.ReactNode {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef<boolean>(false);
+  const startX = useRef<number>(0);
+  const scrollLeft = useRef<number>(0);
+  const autoScrollInterval = useRef<NodeJS.Timer | null>(null);
 
-    const scrollToIndex = (index: number): void => {
-        if (sliderRef.current) {
-            sliderRef.current.scrollTo({
-                left: index * 300, // Adjust width if needed
-                behavior: "smooth",
-            });
-        }
-        setCurrentIndex(index);
-    };
+  const scrollToIndex = (index: number): void => {
+    if (sliderRef.current) {
+      sliderRef.current.scrollTo({
+        left: index * 500, // Adjust width if needed
+        behavior: "smooth",
+      });
+    }
+    setCurrentIndex(index);
+  };
 
-    const scrollLeft = (): void => {
-        if (currentIndex > 0) {
-            scrollToIndex(currentIndex - 1);
-        }
-    };
+  const handleMouseDown = (e: React.MouseEvent): void => {
+    if (sliderRef.current) {
+      isDragging.current = true;
+      startX.current = e.pageX - sliderRef.current.offsetLeft;
+      scrollLeft.current = sliderRef.current.scrollLeft;
+      stopAutoScroll(); // Stop auto-scroll during drag
+    }
+  };
 
-    const scrollRight = (): void => {
-        if (currentIndex < images.length - 1) {
-            scrollToIndex(currentIndex + 1);
-        }
-    };
+  const handleMouseMove = (e: React.MouseEvent): void => {
+    if (!isDragging.current || !sliderRef.current) return;
 
-    return (
-        <div className="relative w-full">
-            {/* Slider Container */}
-            <div
-                ref={sliderRef}
-                className="relative flex overflow-x-hidden whitespace-nowrap scroll-smooth"
-            >
-                {images.map((image, index) => (
-                    <div
-                        key={index}
-                        className="relative flex-shrink-0 w-[300px] h-[400px] mx-2"
-                    >
-                        <Image
-                            src={image.src}
-                            alt={`Image ${index + 1}`}
-                            fill
-                            style={{ objectFit: "cover" }} // Updated
-                            className="rounded-lg"
-                        />
-                    </div>
-                ))}
-            </div>
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1; // Adjust scroll speed
+    sliderRef.current.scrollLeft = scrollLeft.current - walk;
+  };
 
-            {/* Navigation Buttons */}
-            <button
-                onClick={scrollLeft}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition-all duration-300"
-            >
-                <ChevronLeft size={24} />
-            </button>
-            <button
-                onClick={scrollRight}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition-all duration-300"
-            >
-                <ChevronRight size={24} />
-            </button>
+  const handleMouseUp = (): void => {
+    isDragging.current = false;
+    startAutoScroll(); // Resume auto-scroll after drag
+  };
 
-            {/* Dots Navigation */}
-            <div className="flex justify-center mt-4">
-                {images.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => scrollToIndex(index)}
-                        className={`h-3 w-3 mx-1 ${index === currentIndex
-                            ? "bg-[#ff8d46] scale-110"
-                            : "bg-gray-300"
-                            } rounded-full transition-all duration-500 ease-in-out`}
-                    ></button>
-                ))}
-            </div>
-        </div>
-    );
+  const handleMouseLeave = (): void => {
+    isDragging.current = false;
+    startAutoScroll(); // Resume auto-scroll when the mouse leaves
+  };
+
+  const scrollLeftButton = (): void => {
+    stopAutoScroll(); // Stop auto-scroll during manual navigation
+    if (currentIndex > 0) {
+      scrollToIndex(currentIndex - 1);
+    } else {
+      scrollToIndex(images.length - 1); // Wrap to the last image
+    }
+    startAutoScroll(); // Resume auto-scroll after navigation
+  };
+
+  const scrollRightButton = (): void => {
+    stopAutoScroll(); // Stop auto-scroll during manual navigation
+    if (currentIndex < images.length - 1) {
+      scrollToIndex(currentIndex + 1);
+    } else {
+      scrollToIndex(0); // Wrap to the first image
+    }
+    startAutoScroll(); // Resume auto-scroll after navigation
+  };
+
+  // Auto-scroll logic
+  const startAutoScroll = (): void => {
+    stopAutoScroll(); // Ensure no multiple intervals
+    autoScrollInterval.current = setInterval(() => {
+      scrollToIndex((currentIndex + 1) % images.length);
+    }, 3000); // Adjust the interval duration (e.g., 3000ms for 3 seconds)
+  };
+
+  const stopAutoScroll = (): void => {
+    if (autoScrollInterval.current) {
+      clearInterval(autoScrollInterval.current as NodeJS.Timeout);
+      autoScrollInterval.current = null;
+    }
+  };
+
+  useEffect(() => {
+    startAutoScroll(); // Start auto-scroll on component mount
+    return () => stopAutoScroll(); // Cleanup interval on component unmount
+  }, [currentIndex]); // Restart auto-scroll when the current index changes
+
+  return (
+    <div className="relative w-full">
+      {/* Slider Container */}
+      <div
+        ref={sliderRef}
+        className="relative flex overflow-x-hidden whitespace-nowrap scroll-smooth"
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+      >
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-[500px] h-[300px] mx-2 "
+          >
+            <Image
+              src={image.src}
+              alt={`Image ${index + 1}`}
+              fill
+              style={{ objectFit: "cover" }}
+              className="rounded-md"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Navigation Buttons */}
+      <button
+        onClick={scrollLeftButton}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-700 transition-all duration-300"
+      >
+        <ChevronLeft size={24} />
+      </button>
+      <button
+        onClick={scrollRightButton}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white text-black p-2 rounded-full hover:bg-gray-700 transition-all duration-300"
+      >
+        <ChevronRight size={24} />
+      </button>
+
+      {/* Dots Navigation */}
+      <div className="flex justify-center mt-4">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToIndex(index)}
+            className={`h-3 w-3 mx-1 ${
+              index === currentIndex
+                ? "bg-[#ff8d46] scale-110"
+                : "bg-gray-300"
+            } rounded-full transition-all duration-500 ease-in-out`}
+          ></button>
+        ))}
+      </div>
+    </div>
+  );
 }

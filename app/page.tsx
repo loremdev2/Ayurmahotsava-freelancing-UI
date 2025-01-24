@@ -11,7 +11,6 @@ const Home = () => {
         <Section_2 />
         <ExpoStatistics />
         <ImageSlider2 />
-
       </main>
     </div>
   );
