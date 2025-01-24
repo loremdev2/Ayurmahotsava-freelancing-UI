@@ -167,7 +167,7 @@ export default function ImageSlider2(): React.ReactNode {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-[500px] h-[300px] mx-2 "
+            className="relative flex-shrink-0 w-screen sm:w-[400px] h-[200px] mx-2"
           >
             <Image
               src={image.src}
