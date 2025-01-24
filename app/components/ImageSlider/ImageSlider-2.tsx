@@ -167,7 +167,7 @@ export default function ImageSlider2(): React.ReactNode {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative flex-shrink-0 w-screen sm:w-[400px] h-[200px] mx-2"
+            className="relative flex-shrink-0 w-screen sm:w-[400px] h-[200px] "
           >
             <Image
               src={image.src}
@@ -200,7 +200,7 @@ export default function ImageSlider2(): React.ReactNode {
           <button
             key={index}
             onClick={() => scrollToIndex(index)}
-            className={`h-3 w-3 mx-1 ${
+            className={`h-2 w-2 mx-1 ${
               index === currentIndex
                 ? "bg-[#ff8d46] scale-110"
                 : "bg-gray-300"
