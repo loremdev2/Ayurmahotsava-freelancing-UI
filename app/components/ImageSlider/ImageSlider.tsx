@@ -87,9 +87,10 @@ export default function ImageSlider(): any {
                 </div>
 
                 {/* Heading with custom styles */}
-                <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 custom-heading text-white text-sm sm:text-xs lg:text-sm">
-                    Heading
+                <div className="absolute top-1/3 sm:top-[38%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 custom-heading text-white text-sm sm:text-xs lg:text-sm mt-2 sm:mt-4">
+                    HIGHLIGHT
                 </div>
+
 
                 {/* Conditional "Read More" button on 2nd and 3rd images */}
                 {(currentIndex === 1 || currentIndex === 2) && (
